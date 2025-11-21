@@ -3,20 +3,19 @@ let index = 0;
 let selectedBook = null;
 let selectedGwa = null;
 
-// ---- API URL (auto detect) ----
+// ---- API URL ----
 const API_BASE = "https://koreanapi-production.up.railway.app";
-
 
 // ---- Elements ----
 const card = document.getElementById("card");
 const front = document.getElementById("front");
 const back = document.getElementById("back");
 
+let isFlipped = false;
+
 // ------------------------------
 // 🔥 TOUCH (MOBILE)
 // ------------------------------
-let isFlipped = false;
-
 card.addEventListener("touchstart", () => {
     isFlipped = true;
     card.style.transform = "rotateY(180deg)";
@@ -52,7 +51,7 @@ async function loadWords(book, gwa) {
     front.innerText = "⏳ Yuklanmoqda...";
     back.innerText = "";
 
-    const url = `${API_BASE}/flashcards?book=${book}&gwa=${gwa}`;
+    const url = `${API_BASE}/api/flashcards?book=${book}&gwa=${gwa}`;
 
     try {
         const res = await fetch(url);
@@ -81,16 +80,15 @@ function loadCard() {
 
     const w = words[index];
 
-    // Smooth transition
+    // Smooth animation
     card.style.opacity = "0";
 
     setTimeout(() => {
-        front.innerText = w.kr;
-        back.innerText = w.uz;
+        front.innerText = w.kr; // Korean
+        back.innerText = w.uz;  // Uzbek
 
         card.style.transform = "rotateY(0deg)";
         isFlipped = false;
-
         card.style.opacity = "1";
     }, 200);
 }
@@ -117,6 +115,7 @@ document.getElementById("ttsBtn").onclick = () => {
     t.lang = "ko-KR";
     t.rate = 0.9;
     t.pitch = 1.1;
+
     speechSynthesis.cancel();
     speechSynthesis.speak(t);
 };
