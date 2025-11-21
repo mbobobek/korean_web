@@ -28,3 +28,11 @@ export function addWordToDeck(decks, id, word) {
     return exists ? d : { ...d, words: [...d.words, word] };
   });
 }
+
+export function renameDeck(decks, id, name) {
+  return decks.map(d => (d.id === id ? { ...d, name } : d));
+}
+
+export function deleteDeck(decks, id) {
+  return decks.filter(d => d.id !== id);
+}

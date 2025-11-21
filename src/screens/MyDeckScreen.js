@@ -20,7 +20,18 @@ export function MyDeckScreen({ store, onBack, onCreate, onOpenDeck }) {
       list.appendChild(
         MyDeckCard({
           deck,
-          onOpen: () => onOpenDeck(deck)
+          onOpen: () => onOpenDeck(deck),
+          onRename: () => {
+            const name = prompt("Yangi nom:", deck.name);
+            if (!name) return;
+            store.renameDeck(deck.id, name);
+            rerender();
+          },
+          onDelete: () => {
+            if (!confirm("Ushbu deckni o‘chirishni tasdiqlaysizmi?")) return;
+            store.deleteDeck(deck.id);
+            rerender();
+          }
         })
       );
     });
@@ -28,5 +39,11 @@ export function MyDeckScreen({ store, onBack, onCreate, onOpenDeck }) {
 
   root.querySelector("#createBtn").onclick = onCreate;
   root.querySelector("#backBtn").onclick = onBack;
+
+  function rerender() {
+    const newRoot = MyDeckScreen({ store, onBack, onCreate, onOpenDeck });
+    root.replaceWith(newRoot);
+  }
+
   return root;
 }

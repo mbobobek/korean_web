@@ -308,6 +308,16 @@ body.dark .tags { color: #cbd5e1; }
 .btn-later { background: #e1bee7; color: #4a148c; }
 .btn-save { background: #fce4ec; color: #9c1b5a; }
 
+.deck-actions {
+  display: flex;
+  gap: 8px;
+}
+.deck-actions .icon-btn {
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+}
+
 .chip-wrap {
   display: flex;
   flex-wrap: wrap;
@@ -334,7 +344,8 @@ body.dark .tags { color: #cbd5e1; }
 }
 .tc-input {
   width: 100%;
-  min-height: 140px;
+  min-height: 120px;
+  padding-right: 14px;
   resize: vertical;
 }
 

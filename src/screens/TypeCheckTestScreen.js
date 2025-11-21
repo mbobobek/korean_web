@@ -7,8 +7,7 @@ function normalize(text) {
 function scoreWord(expected, actual) {
   const exp = normalize(expected);
   const act = normalize(actual);
-  const ok = exp === act;
-  return { ok, exp: expected, act: actual };
+  return { ok: exp === act, exp: expected, act: actual };
 }
 
 export function TypeCheckTestScreen({ words = [], onBack }) {
@@ -43,7 +42,7 @@ export function TypeCheckTestScreen({ words = [], onBack }) {
     body.innerHTML = `
       <div class="pill mb-2 text-center text-xl font-bold">${word.kr}</div>
       <label class="muted text-xs">Tarjima (o'zbekcha)</label>
-      <input id="answer" class="pill tc-input" placeholder="Javobingizni yozing" />
+      <textarea id="answer" class="pill tc-input" rows="2" placeholder="Javobingizni yozing"></textarea>
       <div class="flex gap-2 mt-2">
         <button class="btn btn-soft w-fit" id="checkBtn">Tekshirish</button>
         <button class="btn btn-soft w-fit" id="skipBtn">O'tkazib yuborish</button>
@@ -88,7 +87,7 @@ export function TypeCheckTestScreen({ words = [], onBack }) {
     root.querySelector("#backBtn").onclick = onBack;
   };
 
-  const nextCard = (advance) => {
+  const nextCard = () => {
     index += 1;
     if (index >= total) {
       summary();

@@ -1,5 +1,12 @@
 import { smartChunk } from "../utils/smartChunk.js";
-import { loadDeckState, saveDeckState, addDeck, addWordToDeck } from "./deck.js";
+import {
+  loadDeckState,
+  saveDeckState,
+  addDeck,
+  addWordToDeck,
+  renameDeck,
+  deleteDeck
+} from "./deck.js";
 import { loadStats, saveStats, updateStats, emptyStats } from "./stats.js";
 import { createSessionLog, addSessionLog } from "./session.js";
 
@@ -76,6 +83,14 @@ class Store {
   }
   addWordToDeck(deckId, word) {
     this.decks = addWordToDeck(this.decks, deckId, word);
+    saveDeckState(this.decks);
+  }
+  renameDeck(deckId, name) {
+    this.decks = renameDeck(this.decks, deckId, name);
+    saveDeckState(this.decks);
+  }
+  deleteDeck(deckId) {
+    this.decks = deleteDeck(this.decks, deckId);
     saveDeckState(this.decks);
   }
   wordInAnyDeck(word) {
