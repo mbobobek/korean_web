@@ -265,6 +265,59 @@ body.dark .progress-bar { background: linear-gradient(90deg,#ff9ecb,#a7ffeb); }
 }
 body.dark .tags { color: #cbd5e1; }
 
+/* Flashcard screen layout */
+.flashcard-screen {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.fc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.fc-chip {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(255,255,255,0.5);
+  font-size: 12px;
+  font-weight: 700;
+}
+body.dark .fc-chip {
+  background: rgba(30,41,59,0.8);
+  border-color: rgba(255,255,255,0.1);
+}
+.fc-card-wrap {
+  display: flex;
+  justify-content: center;
+}
+.fc-card {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.fc-primary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 10px;
+}
+.fc-secondary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 10px;
+}
+.btn-tts { font-weight: 700; }
+.btn-know { background: #def7ec; color: #03543f; }
+.btn-hard { background: #fff4e6; color: #7c2d12; }
+.btn-later { background: #e1bee7; color: #4a148c; }
+.btn-save { background: #fce4ec; color: #9c1b5a; }
+
 /* Minimal utility-like helpers (Tailwind build required for real utility classes) */
 .flex { display: flex; }
 .grid { display: grid; }

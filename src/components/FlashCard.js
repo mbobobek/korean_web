@@ -2,7 +2,7 @@ import { ttsKorean } from "../utils/helpers.js";
 
 export function FlashCard({ word, onKnow, onHard, onLater, onSaveToggle, saved }) {
   const shell = document.createElement("div");
-  shell.className = "card-shell flex flex-col items-center gap-3";
+  shell.className = "card-shell fc-card";
 
   const card = document.createElement("div");
   card.className = "flashcard";
@@ -18,38 +18,39 @@ export function FlashCard({ word, onKnow, onHard, onLater, onSaveToggle, saved }
   };
 
   const ttsBtn = document.createElement("button");
-  ttsBtn.className = "btn btn-soft";
+  ttsBtn.className = "btn btn-soft btn-tts";
   ttsBtn.textContent = "🔊 Tinglash";
   ttsBtn.onclick = () => ttsKorean(word.kr);
 
-  const row = document.createElement("div");
-  row.className = "grid grid-cols-2 gap-3 w-full";
-  row.innerHTML = `
-    <button class="btn" style="background:#def7ec;color:#03543f;">Bilaman</button>
-    <button class="btn" style="background:#fff4e6;color:#7c2d12;">Qiyin</button>
+  const primaryRow = document.createElement("div");
+  primaryRow.className = "fc-primary";
+  primaryRow.innerHTML = `
+    <button class="btn btn-know">Bilaman</button>
+    <button class="btn btn-hard">Qiyin</button>
   `;
 
+  const secondaryRow = document.createElement("div");
+  secondaryRow.className = "fc-secondary";
+
   const laterBtn = document.createElement("button");
-  laterBtn.className = "btn btn-soft";
-  laterBtn.style.background = "#e1bee7";
-  laterBtn.style.color = "#4a148c";
+  laterBtn.className = "btn btn-later";
   laterBtn.textContent = "Keyinroq";
 
   const saveBtn = document.createElement("button");
-  saveBtn.className = "btn btn-soft";
-  saveBtn.style.background = "#fce4ec";
-  saveBtn.style.color = "#9c1b5a";
+  saveBtn.className = "btn btn-save";
   saveBtn.textContent = saved ? "⭐ Saqlangan" : "☆ Saqlash";
 
-  row.children[0].onclick = onKnow;
-  row.children[1].onclick = onHard;
+  primaryRow.children[0].onclick = onKnow;
+  primaryRow.children[1].onclick = onHard;
   laterBtn.onclick = onLater;
   saveBtn.onclick = () => onSaveToggle(saveBtn);
 
+  secondaryRow.appendChild(laterBtn);
+  secondaryRow.appendChild(saveBtn);
+
   shell.appendChild(card);
   shell.appendChild(ttsBtn);
-  shell.appendChild(row);
-  shell.appendChild(laterBtn);
-  shell.appendChild(saveBtn);
+  shell.appendChild(primaryRow);
+  shell.appendChild(secondaryRow);
   return shell;
 }
