@@ -3,6 +3,7 @@ import { fetchWords } from "./utils/api.js";
 import { renderTopBar } from "./components/TopBar.js";
 import {
   showHome,
+  showBookSelect,
   showGwa,
   showIntro,
   showSessions,
@@ -36,6 +37,21 @@ async function handleSelectGwa(gwa) {
   }
 }
 
+async function handleSelectGwaType(gwa) {
+  try {
+    store.setGwa(gwa);
+    const words = await fetchWords(store.book, gwa);
+    showTypeCheck(screenRoot, {
+      words,
+      onBack: () => showGwa(screenRoot, typeGwaProps())
+    });
+  } catch (err) {
+    alert("API xatosi yoki Internet muammosi");
+    console.error(err);
+    showHome(screenRoot, homeProps);
+  }
+}
+
 function handleSelectSession(idx) {
   store.selectSession(idx);
   showFlashcards(screenRoot, {
@@ -53,22 +69,44 @@ function retryHard() {
 }
 
 const homeProps = {
-  onSelectBook: (book) => {
-    store.setBook(book);
-    showGwa(screenRoot, gwaProps());
-  },
-  onMyDeck: () => showMyDeck(screenRoot, deckProps),
-  onTypeCheck: () => showTypeCheck(screenRoot, typeCheckProps)
+  onFlash: () => showBookSelect(screenRoot, flashBookProps),
+  onTypeCheck: () => showBookSelect(screenRoot, typeBookProps)
 };
 
-const gwaProps = () => ({
-  book: store.book,
+const flashBookProps = {
+  title: "Flashcards uchun kitob",
+  subtitle: "1A, 1B, 2A, 2B",
   onBack: () => showHome(screenRoot, homeProps),
+  onSelectBook: (book) => {
+    store.setBook(book);
+    showGwa(screenRoot, flashGwaProps());
+  }
+};
+
+const typeBookProps = {
+  title: "Type & Check uchun kitob",
+  subtitle: "1A, 1B, 2A, 2B",
+  onBack: () => showHome(screenRoot, homeProps),
+  onSelectBook: (book) => {
+    store.setBook(book);
+    showGwa(screenRoot, typeGwaProps());
+  }
+};
+
+const flashGwaProps = () => ({
+  book: store.book,
+  onBack: () => showBookSelect(screenRoot, flashBookProps),
   onSelectGwa: withLoading(handleSelectGwa)
 });
 
+const typeGwaProps = () => ({
+  book: store.book,
+  onBack: () => showBookSelect(screenRoot, typeBookProps),
+  onSelectGwa: withLoading(handleSelectGwaType)
+});
+
 const sessionsProps = {
-  onBack: () => showGwa(screenRoot, gwaProps()),
+  onBack: () => showGwa(screenRoot, flashGwaProps()),
   onSelect: handleSelectSession
 };
 
@@ -84,10 +122,6 @@ const deckProps = {
     store.setWords(deck.words);
     showSessions(screenRoot, sessionsProps);
   }
-};
-
-const typeCheckProps = {
-  onBack: () => showHome(screenRoot, homeProps)
 };
 
 const endProps = {

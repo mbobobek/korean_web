@@ -1,4 +1,5 @@
 import { HomeScreen } from "./screens/HomeScreen.js";
+import { BookScreen } from "./screens/BookScreen.js";
 import { GwaScreen } from "./screens/GwaScreen.js";
 import { IntroScreen } from "./screens/IntroScreen.js";
 import { SessionScreen } from "./screens/SessionScreen.js";
@@ -6,7 +7,7 @@ import { FlashcardScreen } from "./screens/FlashcardScreen.js";
 import { EndScreen } from "./screens/EndScreen.js";
 import { MyDeckScreen } from "./screens/MyDeckScreen.js";
 import { CreateDeckScreen } from "./screens/CreateDeckScreen.js";
-import { TypeCheckScreen } from "./screens/TypeCheckScreen.js";
+import { TypeCheckTestScreen } from "./screens/TypeCheckTestScreen.js";
 
 export function showHome(root, props) {
   root.innerHTML = "";
@@ -50,5 +51,10 @@ export function showCreateDeck(root, props) {
 
 export function showTypeCheck(root, props) {
   root.innerHTML = "";
-  root.appendChild(TypeCheckScreen(props));
+  root.appendChild(TypeCheckTestScreen(props));
+}
+
+export function showBookSelect(root, props) {
+  root.innerHTML = "";
+  root.appendChild(BookScreen(props));
 }
