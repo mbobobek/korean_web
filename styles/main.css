@@ -153,8 +153,8 @@ body.dark .session-card {
 
 .flashcard {
   width: 100%;
-  max-width: 380px;
-  aspect-ratio: 3 / 4;
+  max-width: 320px;
+  aspect-ratio: 2.6 / 3.6;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.45s ease;
@@ -279,18 +279,7 @@ body.dark .tags { color: #cbd5e1; }
   justify-content: space-between;
   gap: 12px;
 }
-.fc-chip {
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.7);
-  border: 1px solid rgba(255,255,255,0.5);
-  font-size: 12px;
-  font-weight: 700;
-}
-body.dark .fc-chip {
-  background: rgba(30,41,59,0.8);
-  border-color: rgba(255,255,255,0.1);
-}
+.flex-gap { flex: 1; }
 .fc-card-wrap {
   display: flex;
   justify-content: center;

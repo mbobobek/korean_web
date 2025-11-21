@@ -5,12 +5,11 @@ export function IntroScreen({ onStart }) {
   root.innerHTML = `
     <h2 class="text-2xl font-bold mb-2">Qoidalar</h2>
     <div class="pill mb-3">
-      ⭐ Bilaman – sessiondan chiqariladi<br/>
-      ⚠️ Qiyin – keyingi Hard session<br/>
-      🔁 Keyinroq – session oxiriga qaytadi<br/>
-      ☆ Saqlash – MyDeck ga saqlanadi
+      ⭐ Bilaman – chiqaramiz<br/>
+      ⚠️ Qiyin – keyingi qismga<br/>
+      🔁 Keyinroq – oxiriga qaytariladi<br/>
+      ☆ Saqlash – MyDeck’ga
     </div>
-    <p class="muted mb-4">Pastel Korean uslubida. TTS bilan o'qish.</p>
     <button class="btn btn-soft" id="startBtn" style="background:linear-gradient(135deg,#fce4ec,#a7ffeb);color:#0f172a;font-weight:700;">Boshlash →</button>
   `;
 

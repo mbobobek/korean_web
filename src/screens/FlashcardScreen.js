@@ -39,7 +39,7 @@ export function FlashcardScreen({ store: s, onEnd, onBack }) {
         <div class="muted text-xs uppercase tracking-wide">Session ${s.currentSessionIndex + 1}</div>
         <div class="font-bold">Card ${s.currentCardIndex + 1}/${s.currentSession().length}</div>
       </div>
-      <div class="fc-chip">Pastel mode</div>
+      <div class="flex-gap"></div>
     `;
     header.querySelector("#backBtn").onclick = () => {
       modal.remove();

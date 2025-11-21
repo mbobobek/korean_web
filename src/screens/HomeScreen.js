@@ -5,7 +5,6 @@ export function HomeScreen({ onSelectBook, onMyDeck }) {
   root.innerHTML = `
     <div class="mb-4">
       <h1 class="text-3xl font-bold">Kitobni tanlang</h1>
-      <p class="muted">1A, 1B, 2A, 2B bo'yicha pastel gradient tugmalar</p>
     </div>
     <div class="grid-books">
       ${["1A", "1B", "2A", "2B"].map(book => `

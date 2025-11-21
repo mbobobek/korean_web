@@ -3,7 +3,7 @@ export function ttsKorean(text) {
   if (!synth) return;
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = "ko-KR";
-  utter.rate = 0.85;
+  utter.rate = 0.75;
   utter.pitch = 1.0;
   utter.volume = 1;
   synth.speak(utter);
