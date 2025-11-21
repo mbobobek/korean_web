@@ -6,6 +6,7 @@ import { FlashcardScreen } from "./screens/FlashcardScreen.js";
 import { EndScreen } from "./screens/EndScreen.js";
 import { MyDeckScreen } from "./screens/MyDeckScreen.js";
 import { CreateDeckScreen } from "./screens/CreateDeckScreen.js";
+import { TypeCheckScreen } from "./screens/TypeCheckScreen.js";
 
 export function showHome(root, props) {
   root.innerHTML = "";
@@ -45,4 +46,9 @@ export function showMyDeck(root, props) {
 export function showCreateDeck(root, props) {
   root.innerHTML = "";
   root.appendChild(CreateDeckScreen(props));
+}
+
+export function showTypeCheck(root, props) {
+  root.innerHTML = "";
+  root.appendChild(TypeCheckScreen(props));
 }

@@ -9,7 +9,8 @@ import {
   showFlashcards,
   showEnd,
   showMyDeck,
-  showCreateDeck
+  showCreateDeck,
+  showTypeCheck
 } from "./router.js";
 
 const screenRoot = document.getElementById("screen-root");
@@ -56,7 +57,8 @@ const homeProps = {
     store.setBook(book);
     showGwa(screenRoot, gwaProps());
   },
-  onMyDeck: () => showMyDeck(screenRoot, deckProps)
+  onMyDeck: () => showMyDeck(screenRoot, deckProps),
+  onTypeCheck: () => showTypeCheck(screenRoot, typeCheckProps)
 };
 
 const gwaProps = () => ({
@@ -82,6 +84,10 @@ const deckProps = {
     store.setWords(deck.words);
     showSessions(screenRoot, sessionsProps);
   }
+};
+
+const typeCheckProps = {
+  onBack: () => showHome(screenRoot, homeProps)
 };
 
 const endProps = {

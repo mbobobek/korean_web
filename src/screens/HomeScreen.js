@@ -1,10 +1,14 @@
-export function HomeScreen({ onSelectBook, onMyDeck }) {
+export function HomeScreen({ onSelectBook, onMyDeck, onTypeCheck }) {
   const root = document.createElement("div");
   root.className = "screen";
 
   root.innerHTML = `
-    <div class="mb-4">
-      <h1 class="text-3xl font-bold">Kitobni tanlang</h1>
+    <div class="mb-4 flex-between">
+      <div>
+        <h1 class="text-3xl font-bold">Kitobni tanlang</h1>
+        <p class="muted">Pastel gradient tugmalar</p>
+      </div>
+      <button class="btn btn-soft" id="typeCheckBtn">Type & Check</button>
     </div>
     <div class="grid-books">
       ${["1A", "1B", "2A", "2B"].map(book => `
@@ -13,7 +17,7 @@ export function HomeScreen({ onSelectBook, onMyDeck }) {
         </button>
       `).join("")}
     </div>
-    <div class="mt-6">
+    <div class="mt-6 flex gap-3">
       <button class="btn btn-soft" id="deckBtn">📚 MyDeck</button>
     </div>
   `;
@@ -22,6 +26,7 @@ export function HomeScreen({ onSelectBook, onMyDeck }) {
     btn.onclick = () => onSelectBook(btn.dataset.book);
   });
   root.querySelector("#deckBtn").onclick = onMyDeck;
+  root.querySelector("#typeCheckBtn").onclick = onTypeCheck;
 
   return root;
 }

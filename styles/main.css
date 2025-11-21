@@ -119,6 +119,7 @@ body.dark .muted { color: #cbd5e1; }
 }
 .grid-books { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
 .grid-gwa { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.flex-between { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 
 .pill {
   padding: 14px 16px;
@@ -306,6 +307,36 @@ body.dark .tags { color: #cbd5e1; }
 .btn-hard { background: #fff4e6; color: #7c2d12; }
 .btn-later { background: #e1bee7; color: #4a148c; }
 .btn-save { background: #fce4ec; color: #9c1b5a; }
+
+.chip-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  border: 1px solid rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.7);
+}
+.chip-ok { background: #def7ec; color: #03543f; border-color: #99f6e4; }
+.chip-err { background: #ffe4e6; color: #9f1239; border-color: #fecdd3; }
+
+.typecheck {
+  max-width: 820px;
+  margin: 0 auto;
+}
+.tc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+}
+.tc-input {
+  width: 100%;
+  min-height: 140px;
+  resize: vertical;
+}
 
 /* Minimal utility-like helpers (Tailwind build required for real utility classes) */
 .flex { display: flex; }
