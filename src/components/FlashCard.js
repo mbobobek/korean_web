@@ -17,11 +17,13 @@ export function FlashCard({ word, onKnow, onHard, onLater, onSaveToggle, saved }
     card.classList.toggle("flipped", flipped);
   };
 
+  // TTS tugmasi
   const ttsBtn = document.createElement("button");
   ttsBtn.className = "btn btn-soft btn-tts";
   ttsBtn.textContent = "🔊 Tinglash";
   ttsBtn.onclick = () => ttsKorean(word.kr);
 
+  // Asosiy harakatlar
   const primaryRow = document.createElement("div");
   primaryRow.className = "fc-primary";
   primaryRow.innerHTML = `
@@ -29,6 +31,7 @@ export function FlashCard({ word, onKnow, onHard, onLater, onSaveToggle, saved }
     <button class="btn btn-hard">Qiyin</button>
   `;
 
+  // Qo‘shimcha harakatlar
   const secondaryRow = document.createElement("div");
   secondaryRow.className = "fc-secondary";
 

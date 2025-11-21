@@ -1,6 +1,8 @@
 export function ttsKorean(text) {
   const synth = window.speechSynthesis;
   if (!synth) return;
+
+  // Koreyscha TTS parametrlari
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = "ko-KR";
   utter.rate = 0.75;
