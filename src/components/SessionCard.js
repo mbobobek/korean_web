@@ -1,20 +1,13 @@
-export function SessionCard(session, onClick) {
-    const el = document.createElement("button");
-    el.className = `
-        flashcard-glass w-full text-left px-4 py-3 rounded-2xl
-        flex justify-between items-center hover:scale-[1.02]
-    `;
-
-    el.innerHTML = `
-        <div>
-            <div class="text-sm text-indigo-200/80">${session.title}</div>
-            <div class="text-xs text-white/70">
-                So‘zlar: ${session.startIndex} – ${session.endIndex}
-            </div>
-        </div>
-        <div class="text-lg">▶</div>
-    `;
-
-    el.onclick = onClick;
-    return el;
+export function SessionCard({ index, count, onClick }) {
+  const btn = document.createElement("button");
+  btn.className = "session-card";
+  btn.innerHTML = `
+    <div>
+      <div class="font-semibold">Session ${index + 1}</div>
+      <div class="muted">${count} ta so'z</div>
+    </div>
+    <div class="text-lg">→</div>
+  `;
+  btn.onclick = onClick;
+  return btn;
 }

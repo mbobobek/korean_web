@@ -1,30 +1,18 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Korean Flashcards — Premium</title>
-
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Custom styles -->
-    <link rel="stylesheet" href="./styles/main.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Korean Flashcards</title>
+  <link rel="stylesheet" href="./styles/output.css" />
 </head>
+<body class="app-body">
+  <div class="bg-gradient"></div>
+  <div class="bg-glow"></div>
 
-<body id="body"
-      class="min-h-screen bg-[#05050a] text-white overflow-hidden select-none">
+  <div id="topbar-root"></div>
+  <main id="screen-root"></main>
 
-<!-- Animated background -->
-<div class="absolute inset-0 -z-20 bg-gradient-to-br from-indigo-900 via-purple-900 to-black opacity-70"></div>
-<div id="bg-glow" class="absolute inset-0 -z-10"></div>
-
-<!-- Top bar -->
-<div id="topbar-root"></div>
-
-<!-- Screen container -->
-<div id="screen-root" class="w-full h-full pt-4"></div>
-
-<script type="module" src="src/app.js"></script>
+  <script type="module" src="./src/app.js"></script>
 </body>
 </html>

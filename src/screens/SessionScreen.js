@@ -1,29 +1,38 @@
 import { SessionCard } from "../components/SessionCard.js";
+import { ProgressBar } from "../components/ProgressBar.js";
+import { store } from "../state/store.js";
 
-export function SessionScreen({ book, gwa, sessions, onBack, onSelectSession }) {
-    const root = document.createElement("div");
-    root.className = "screen-fade flex flex-col items-center mt-4 px-4";
+export function SessionScreen({ onBack, onSelect }) {
+  const root = document.createElement("div");
+  root.className = "screen";
 
-    root.innerHTML = `
-        <h2 class="text-2xl font-semibold mb-1">
-            ${book} — ${gwa}과
-        </h2>
-        <p class="text-sm text-white/70 mb-4">
-            So‘zlarni qulay bo‘lish uchun sessionlarga ajratdik.
-        </p>
-        <div class="w-full max-w-md flex flex-col gap-3" id="sessionList"></div>
-        <button id="backBtn" class="mt-4 text-sm text-white/70 underline">
-            ⬅ Bo‘limga qaytish
-        </button>
-    `;
+  const total = store.sessions.flat().length;
 
-    const list = root.querySelector("#sessionList");
-    sessions.forEach((s, idx) => {
-        const c = SessionCard(s, () => onSelectSession(idx));
-        list.appendChild(c);
-    });
+  root.innerHTML = `
+    <button class="btn btn-soft w-fit mb-3" id="backBtn">← Ortga</button>
+    <h2 class="text-xl font-bold mb-1">${store.book} — ${store.gwa}-과</h2>
+    <p class="muted mb-3">Jami so'zlar: ${total} ta</p>
+    <div id="list" class="flex flex-col gap-2 mb-3"></div>
+    <div class="tags">
+      <span>⭐ Bilaman</span><span>⚠ Qiyin</span><span>🔁 Keyinroq</span>
+    </div>
+  `;
 
-    root.querySelector("#backBtn").onclick = onBack;
+  const list = root.querySelector("#list");
+  store.sessions.forEach((session, idx) => {
+    list.appendChild(
+      SessionCard({
+        index: idx,
+        count: session.length,
+        onClick: () => onSelect(idx)
+      })
+    );
+  });
 
-    return root;
+  root.appendChild(
+    ProgressBar({ value: 0, total: total || 1 })
+  );
+
+  root.querySelector("#backBtn").onclick = onBack;
+  return root;
 }

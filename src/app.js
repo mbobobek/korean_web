@@ -1,120 +1,110 @@
-import { TopBar } from "./components/TopBar.js";
-import { HomeScreen } from "./screens/HomeScreen.js";
-import { GwaScreen } from "./screens/GwaScreen.js";
-import { SessionScreen } from "./screens/SessionScreen.js";
-import { FlashcardScreen } from "./screens/FlashcardScreen.js";
-import { MyDeckScreen } from "./screens/MyDeckScreen.js";
-
 import { store } from "./state/store.js";
 import { fetchWords } from "./utils/api.js";
+import { renderTopBar } from "./components/TopBar.js";
+import {
+  showHome,
+  showGwa,
+  showIntro,
+  showSessions,
+  showFlashcards,
+  showEnd,
+  showMyDeck,
+  showCreateDeck
+} from "./router.js";
 
-const body = document.getElementById("body");
 const screenRoot = document.getElementById("screen-root");
 const topbarRoot = document.getElementById("topbar-root");
+const body = document.body;
 
-function renderTopbar() {
-    topbarRoot.innerHTML = "";
-    topbarRoot.appendChild(
-        TopBar({
-            getStats: () => store.stats,
-            onDeck: () => navigate("deck"),
-            onStats: () => {}, // alert ichida ko'rsatdik
-            onTheme: toggleTheme
-        })
-    );
+const applyTheme = () => body.classList.toggle("dark", store.theme === "dark");
+const withLoading = (fn) => async (...args) => {
+  screenRoot.innerHTML = `<div class="screen text-center py-10">Yuklanmoqda...</div>`;
+  await fn(...args);
+};
+
+async function handleSelectGwa(gwa) {
+  try {
+    store.setGwa(gwa);
+    const words = await fetchWords(store.book, gwa);
+    store.setWords(words);
+    showIntro(screenRoot, { onStart: () => showSessions(screenRoot, sessionsProps) });
+  } catch (err) {
+    alert("API xatosi yoki Internet muammosi");
+    console.error(err);
+    showHome(screenRoot, homeProps);
+  }
 }
 
-function toggleTheme() {
-    const next = store.theme === "dark" ? "light" : "dark";
-    store.setTheme(next);
-    if (next === "light") {
-        body.classList.add("bg-white", "text-black");
-    } else {
-        body.classList.remove("bg-white", "text-black");
-    }
+function handleSelectSession(idx) {
+  store.selectSession(idx);
+  showFlashcards(screenRoot, {
+    store,
+    onEnd: () => showEnd(screenRoot, endProps),
+    onBack: () => showSessions(screenRoot, sessionsProps)
+  });
 }
 
-// Router state
-let currentScreen = "home";
-let fromDeck = false;
-
-async function navigate(screen) {
-    currentScreen = screen;
-    screenRoot.innerHTML = "";
-
-    if (screen === "home") {
-        const home = HomeScreen({
-            onSelectBook: (book) => {
-                store.setBook(book);
-                navigate("gwa");
-            }
-        });
-        screenRoot.appendChild(home);
-    }
-
-    if (screen === "gwa") {
-        const gwa = GwaScreen({
-            book: store.book,
-            onBack: () => navigate("home"),
-            onSelectGwa: async (gwaNum) => {
-                try {
-                    store.setGwa(gwaNum);
-                    const words = await fetchWords(store.book, gwaNum);
-                    store.setWords(words);
-                    navigate("session");
-                } catch (e) {
-                    alert("API xatosi: " + e.message);
-                }
-            }
-        });
-        screenRoot.appendChild(gwa);
-    }
-
-    if (screen === "session") {
-        const session = SessionScreen({
-            book: store.book,
-            gwa: store.gwa,
-            sessions: store.sessions,
-            onBack: () => navigate("gwa"),
-            onSelectSession: (idx) => {
-                store.selectSession(idx);
-                navigate("flashcards");
-            }
-        });
-        screenRoot.appendChild(session);
-    }
-
-    if (screen === "flashcards") {
-        const screenEl = FlashcardScreen({
-            store,
-            onBackToSessions: () => navigate("session"),
-            onGoDeckFromSession: (goDeck) => {
-                // goDeck false bo'lsa ham, shunchaki qayta chizamiz
-                navigate("flashcards");
-            }
-        });
-        screenRoot.appendChild(screenEl);
-    }
-
-    if (screen === "deck") {
-        const deckScreen = MyDeckScreen({
-            store,
-            onBack: () => navigate("home"),
-            onStartDeckSession: () => {
-                // MyDeckdagi so'zlardan vaqtincha session yasaymiz
-                store.setWords(store.deck);
-                navigate("session");
-            }
-        });
-        screenRoot.appendChild(deckScreen);
-    }
+function retryHard() {
+  const hard = store.stats.hard;
+  if (!hard.length) return showEnd(screenRoot, endProps);
+  store.setWords(hard);
+  showSessions(screenRoot, sessionsProps);
 }
 
-// Init
-renderTopbar();
-navigate("home");
+const homeProps = {
+  onSelectBook: (book) => {
+    store.setBook(book);
+    showGwa(screenRoot, gwaProps());
+  },
+  onMyDeck: () => showMyDeck(screenRoot, deckProps)
+};
 
-// apply saved theme
-if (store.theme === "light") {
-    body.classList.add("bg-white", "text-black");
+const gwaProps = () => ({
+  book: store.book,
+  onBack: () => showHome(screenRoot, homeProps),
+  onSelectGwa: withLoading(handleSelectGwa)
+});
+
+const sessionsProps = {
+  onBack: () => showGwa(screenRoot, gwaProps()),
+  onSelect: handleSelectSession
+};
+
+const deckProps = {
+  store,
+  onBack: () => showHome(screenRoot, homeProps),
+  onCreate: () => showCreateDeck(screenRoot, {
+    onBack: () => showMyDeck(screenRoot, deckProps),
+    onDone: (name) => { store.addDeck(name); showMyDeck(screenRoot, deckProps); }
+  }),
+  onOpenDeck: (deck) => {
+    if (!deck.words.length) return alert("Deck bo'sh");
+    store.setWords(deck.words);
+    showSessions(screenRoot, sessionsProps);
+  }
+};
+
+const endProps = {
+  store,
+  onHome: () => showHome(screenRoot, homeProps),
+  onRetryHard: retryHard
+};
+
+const topProps = {
+  theme: store.theme,
+  onHome: () => showHome(screenRoot, homeProps),
+  onDeck: () => showMyDeck(screenRoot, deckProps),
+  onThemeToggle: () => {
+    store.toggleTheme();
+    applyTheme();
+    renderTopBar(topbarRoot, { ...topProps, theme: store.theme });
+  }
+};
+
+function bootstrap() {
+  applyTheme();
+  renderTopBar(topbarRoot, topProps);
+  showHome(screenRoot, homeProps);
 }
+
+bootstrap();

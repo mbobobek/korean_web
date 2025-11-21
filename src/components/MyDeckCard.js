@@ -1,14 +1,13 @@
-export function MyDeckCard(word) {
-    const el = document.createElement("div");
-    el.className = `
-        flashcard-glass px-4 py-3 rounded-2xl
-        flex justify-between items-center
-    `;
-    el.innerHTML = `
-        <div>
-            <div class="text-base font-semibold">${word.kr}</div>
-            <div class="text-xs text-white/70">${word.uz}</div>
-        </div>
-    `;
-    return el;
+export function MyDeckCard({ deck, onOpen }) {
+  const btn = document.createElement("button");
+  btn.className = "session-card";
+  btn.innerHTML = `
+    <div>
+      <div class="font-semibold">${deck.name}</div>
+      <div class="muted">${deck.words.length} ta so'z</div>
+    </div>
+    <div>➜</div>
+  `;
+  btn.onclick = onOpen;
+  return btn;
 }

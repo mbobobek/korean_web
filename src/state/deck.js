@@ -1,27 +1,30 @@
-const DECK_KEY = "korean_flash_mydeck";
+const KEY = "korean_web_decks";
 
-export function loadDeck() {
-    try {
-        return JSON.parse(localStorage.getItem(DECK_KEY)) || [];
-    } catch {
-        return [];
-    }
+function persist(data) {
+  if (typeof localStorage === "undefined") return;
+  localStorage.setItem(KEY, JSON.stringify(data));
 }
 
-export function saveDeck(deck) {
-    localStorage.setItem(DECK_KEY, JSON.stringify(deck));
+export function loadDeckState() {
+  if (typeof localStorage === "undefined") return [];
+  try {
+    return JSON.parse(localStorage.getItem(KEY)) || [];
+  } catch {
+    return [];
+  }
 }
 
-export function toggleInDeck(deck, word) {
-    const idx = deck.findIndex(w => w.kr === word.kr && w.uz === word.uz);
-    if (idx >= 0) {
-        const copy = [...deck];
-        copy.splice(idx, 1);
-        return copy;
-    }
-    return [...deck, word];
+export function saveDeckState(decks) { persist(decks); }
+
+export function addDeck(decks, name) {
+  const deck = { id: crypto.randomUUID(), name, words: [] };
+  return [...decks, deck];
 }
 
-export function isInDeck(deck, word) {
-    return deck.some(w => w.kr === word.kr && w.uz === word.uz);
+export function addWordToDeck(decks, id, word) {
+  return decks.map(d => {
+    if (d.id !== id) return d;
+    const exists = d.words.some(w => w.kr === word.kr && w.uz === word.uz);
+    return exists ? d : { ...d, words: [...d.words, word] };
+  });
 }

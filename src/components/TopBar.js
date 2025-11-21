@@ -1,40 +1,24 @@
-import { formatStats } from "../state/stats.js";
+export function renderTopBar(root, { onHome, onDeck, onThemeToggle, theme }) {
+  root.innerHTML = "";
+  const wrap = document.createElement("header");
+  wrap.className = "topbar";
 
-export function TopBar({ onDeck, onStats, onTheme, getStats }) {
-    const root = document.createElement("div");
-    root.className = "w-full px-5 pt-4 flex justify-between items-center";
+  wrap.innerHTML = `
+    <div>
+      <div class="brand">Korean</div>
+      <div class="title">Flashcards</div>
+    </div>
+    <div class="flex gap-3 items-center">
+      <button class="icon-btn" title="Bosh sahifa" aria-label="Home">🏠</button>
+      <button class="icon-btn" title="MyDeck" aria-label="Deck">📚</button>
+      <button class="icon-btn" title="Tema" aria-label="Theme">${theme === "dark" ? "☀️" : "🌙"}</button>
+    </div>
+  `;
 
-    const stats = formatStats(getStats());
+  const [homeBtn, deckBtn, themeBtn] = wrap.querySelectorAll("button");
+  homeBtn.onclick = onHome;
+  deckBtn.onclick = onDeck;
+  themeBtn.onclick = onThemeToggle;
 
-    root.innerHTML = `
-        <div class="flex flex-col">
-            <span class="text-sm uppercase tracking-[0.2em] text-indigo-300/70">
-                Korean Flashcards
-            </span>
-            <span class="text-xl font-semibold">Daily Session</span>
-        </div>
-
-        <div class="flex items-center gap-3 text-lg">
-            <button id="statsBtn" class="hover:scale-110">📊</button>
-            <button id="deckBtn" class="hover:scale-110">⭐</button>
-            <button id="themeBtn" class="hover:scale-110">🌗</button>
-        </div>
-    `;
-
-    root.querySelector("#deckBtn").onclick = onDeck;
-    root.querySelector("#statsBtn").onclick = () => {
-        const s = formatStats(getStats());
-        alert(
-            `📊 Statistika:\n\n` +
-            `Ko‘rilgan: ${s.seen}\n` +
-            `Bilaman: ${s.know}\n` +
-            `Qiyin: ${s.hard}\n` +
-            `Takror: ${s.repeat}\n` +
-            `Retention: ${s.retention}%`
-        );
-        onStats && onStats();
-    };
-    root.querySelector("#themeBtn").onclick = onTheme;
-
-    return root;
+  root.appendChild(wrap);
 }

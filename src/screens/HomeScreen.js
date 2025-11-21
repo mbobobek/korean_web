@@ -1,38 +1,28 @@
-export function HomeScreen({ onSelectBook }) {
-    const root = document.createElement("div");
-    root.className = "screen-fade w-full flex flex-col items-center mt-5";
+export function HomeScreen({ onSelectBook, onMyDeck }) {
+  const root = document.createElement("div");
+  root.className = "screen";
 
-    root.innerHTML = `
-        <h1 class="text-3xl font-bold mb-4">
-            Kitobni tanlang
-        </h1>
+  root.innerHTML = `
+    <div class="mb-4">
+      <h1 class="text-3xl font-bold">Kitobni tanlang</h1>
+      <p class="muted">1A, 1B, 2A, 2B bo'yicha pastel gradient tugmalar</p>
+    </div>
+    <div class="grid-books">
+      ${["1A", "1B", "2A", "2B"].map(book => `
+        <button class="pill" data-book="${book}" style="background:linear-gradient(135deg,#fce4ec,#e1bee7);">
+          ${book}
+        </button>
+      `).join("")}
+    </div>
+    <div class="mt-6">
+      <button class="btn btn-soft" id="deckBtn">📚 MyDeck</button>
+    </div>
+  `;
 
-        <div class="w-full max-w-xs flex flex-col gap-3">
-            <button data-book="1A"
-                class="bg-gradient-to-r from-indigo-500 to-indigo-700 py-3 rounded-2xl shadow-lg">
-                📘 1A
-            </button>
-            <button data-book="1B"
-                class="bg-gradient-to-r from-purple-500 to-purple-700 py-3 rounded-2xl shadow-lg">
-                📙 1B
-            </button>
-            <button data-book="2A"
-                class="bg-gradient-to-r from-pink-500 to-pink-700 py-3 rounded-2xl shadow-lg">
-                📗 2A
-            </button>
-            <button data-book="2B"
-                class="bg-gradient-to-r from-blue-500 to-blue-700 py-3 rounded-2xl shadow-lg">
-                📕 2B
-            </button>
-        </div>
-    `;
+  root.querySelectorAll("[data-book]").forEach(btn => {
+    btn.onclick = () => onSelectBook(btn.dataset.book);
+  });
+  root.querySelector("#deckBtn").onclick = onMyDeck;
 
-    root.querySelectorAll("button[data-book]").forEach(btn => {
-        btn.onclick = () => {
-            const book = btn.dataset.book;
-            onSelectBook(book);
-        };
-    });
-
-    return root;
+  return root;
 }

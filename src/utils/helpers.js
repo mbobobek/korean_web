@@ -1,17 +1,18 @@
-export function chunkArray(arr, size) {
-    const chunks = [];
-    for (let i = 0; i < arr.length; i += size) {
-        chunks.push(arr.slice(i, i + size));
-    }
-    return chunks;
+export function ttsKorean(text) {
+  const synth = window.speechSynthesis;
+  if (!synth) return;
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = "ko-KR";
+  utter.rate = 0.85;
+  utter.pitch = 1.0;
+  utter.volume = 1;
+  synth.speak(utter);
 }
 
-export function ttsKorean(text) {
-    if (!text) return;
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = "ko-KR";
-    u.rate = 0.9;
-    u.pitch = 1.05;
-    speechSynthesis.cancel();
-    speechSynthesis.speak(u);
+export function fadeIn(el) {
+  el.style.opacity = 0;
+  requestAnimationFrame(() => {
+    el.style.transition = "opacity 0.25s ease";
+    el.style.opacity = 1;
+  });
 }

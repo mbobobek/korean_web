@@ -1,28 +1,24 @@
 export function GwaScreen({ book, onBack, onSelectGwa }) {
-    const root = document.createElement("div");
-    root.className = "screen-fade flex flex-col items-center mt-4";
+  const root = document.createElement("div");
+  root.className = "screen";
 
-    root.innerHTML = `
-        <h2 class="text-2xl font-semibold mb-2">${book} — bo‘limni tanlang</h2>
-        <div class="grid grid-cols-3 gap-3 w-full max-w-xs mb-5" id="gwaGrid"></div>
-        <button class="mt-2 text-sm text-white/70 underline" id="backBtn">
-            ⬅ Kitobga qaytish
+  root.innerHTML = `
+    <button class="btn btn-soft w-fit mb-3" id="backBtn">← Ortga</button>
+    <h2 class="text-2xl font-bold mb-1">${book}</h2>
+    <p class="muted mb-3">Bo'lim (과) ni tanlang</p>
+    <div class="grid-gwa">
+      ${Array.from({ length: 8 }, (_, i) => `
+        <button class="pill" data-gwa="${i + 1}" style="background:linear-gradient(135deg,#e3f2fd,#a7ffeb);">
+          ${i + 1} 과
         </button>
-    `;
+      `).join("")}
+    </div>
+  `;
 
-    const grid = root.querySelector("#gwaGrid");
-    for (let i = 1; i <= 8; i++) {
-        const b = document.createElement("button");
-        b.className = `
-            flashcard-glass py-2 rounded-2xl text-lg
-            hover:scale-[1.05]
-        `;
-        b.textContent = `${i}과`;
-        b.onclick = () => onSelectGwa(i);
-        grid.appendChild(b);
-    }
+  root.querySelector("#backBtn").onclick = onBack;
+  root.querySelectorAll("[data-gwa]").forEach(btn => {
+    btn.onclick = () => onSelectGwa(Number(btn.dataset.gwa));
+  });
 
-    root.querySelector("#backBtn").onclick = onBack;
-
-    return root;
+  return root;
 }

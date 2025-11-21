@@ -1,4 +1,7 @@
-export function shake(element) {
-    element.classList.add("animate-[wiggle_0.3s]");
-    setTimeout(() => element.classList.remove("animate-[wiggle_0.3s]"), 300);
+export function slideUp(element) {
+  element.classList.add("active");
+}
+
+export function slideDown(element) {
+  element.classList.remove("active");
 }

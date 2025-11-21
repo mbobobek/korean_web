@@ -1,33 +1,29 @@
-const STATS_KEY = "korean_flash_stats";
+const KEY = "korean_web_stats";
+
+export const emptyStats = () => ({ know: [], hard: [], later: [] });
 
 export function loadStats() {
-    try {
-        return JSON.parse(localStorage.getItem(STATS_KEY)) || {
-            seen: 0,
-            know: 0,
-            hard: 0,
-            repeat: 0
-        };
-    } catch {
-        return { seen: 0, know: 0, hard: 0, repeat: 0 };
-    }
+  if (typeof localStorage === "undefined") return emptyStats();
+  try {
+    return JSON.parse(localStorage.getItem(KEY)) || emptyStats();
+  } catch {
+    return emptyStats();
+  }
 }
 
 export function saveStats(stats) {
-    localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+  if (typeof localStorage === "undefined") return;
+  localStorage.setItem(KEY, JSON.stringify(stats));
 }
 
-export function updateStats(stats, action) {
-    const copy = { ...stats };
-    copy.seen += 1;
-    if (action === "know") copy.know += 1;
-    if (action === "hard") copy.hard += 1;
-    if (action === "repeat") copy.repeat += 1;
-    return copy;
-}
-
-export function formatStats(stats) {
-    const { seen, know, hard, repeat } = stats;
-    const retention = seen ? Math.round((know / seen) * 100) : 0;
-    return { seen, know, hard, repeat, retention };
+export function updateStats(stats, word, type) {
+  const clone = {
+    know: [...stats.know],
+    hard: [...stats.hard],
+    later: [...stats.later]
+  };
+  if (type === "know") clone.know.push(word);
+  if (type === "hard") clone.hard.push(word);
+  if (type === "later") clone.later.push(word);
+  return clone;
 }
